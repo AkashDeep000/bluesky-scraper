@@ -38,4 +38,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install
   
-      - run: node index.js
+      - name: Scrape and Send Email
+        run: node index.js
