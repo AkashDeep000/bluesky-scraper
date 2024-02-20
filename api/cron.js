@@ -51,8 +51,9 @@ export default async function handler(req, res) {
     endDate,
     totalDayCount: date.subtract(endDate, startDate).toDays() + 1,
   });
+  
   const filteredData = data.rows.filter(
-    (row) => date.subtract(new Date(row.PostDate), startDate).toDays() < 8
+    (row) => date.subtract(endDate, new Date(row.PostDate)).toDays() < 7
   );
   const dateSet = new Set(
     filteredData.map((row) => row.PostDate.split("T")[0])
