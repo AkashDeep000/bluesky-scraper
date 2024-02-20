@@ -1,4 +1,4 @@
-import login from "./utils/login.js";
+import login from "../utils/login.js";
 import { AsyncParser } from "@json2csv/node";
 // import fs from "fs/promises";
 import date from "date-and-time";
@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   const logedIn = await login();
   console.log("logedIn");
 
-  const res = await fetch(
+  const apiRes = await fetch(
     "https://bssservice.blueskymss.com/mvc/api/ui/grid/list",
     {
       headers: {
@@ -40,7 +40,7 @@ export default async function handler(req, res) {
     }
   );
 
-  const data = await res.json();
+  const data = await apiRes.json();
   console.log({ allTimeTotal: data.rows.length });
 
   const startDate = date.addDays(new Date(new Date().toDateString()), -7);
