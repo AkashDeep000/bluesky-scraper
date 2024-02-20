@@ -2,7 +2,7 @@ name: Scraper Cron Job
 on:
   # Triggers the workflow after every 7 days
   schedule:
-    - cron: '*/3 * * * *'
+    - cron: '0 0 * * 1'
 
 jobs:
   Send-Email:
