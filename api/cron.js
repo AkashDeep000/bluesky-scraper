@@ -44,7 +44,7 @@ export default async function handler(req, res) {
   console.log({ allTimeTotal: data.rows.length });
 
   const startDate = date.addDays(new Date(new Date().toDateString()), -7);
-  const endDate = new Date(new Date().toDateString());
+  const endDate = date.addDays(new Date(new Date().toDateString()), -1);
 
   console.log({
     startDate,
@@ -52,7 +52,7 @@ export default async function handler(req, res) {
     gap: date.subtract(endDate, startDate).toDays(),
   });
   const filteredData = data.rows.filter(
-    (row) => date.subtract(endDate, new Date(row.PostDate)).toDays() < 7
+    (row) => date.subtract(endDate, new Date(row.PostDate)).toDays() < 8
   );
   const dateSet = new Set(
     filteredData.map((row) => row.PostDate.split("T")[0])
