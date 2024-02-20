@@ -6,6 +6,13 @@ import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();
 
+const reqEnvVars = ['USER_NAME', 'PASSWORD', 'GMAIL_ID', 'GMAIL_PASS', 'RECIVER_EMAIL']
+reqEnvVars.forEach(item => {
+  if (!process.env[item]) {
+    throw new Error(`Enverment variable '${item}' is missing.`)
+  }
+})
+
 const logedIn = await login();
 console.log("logedIn");
 
