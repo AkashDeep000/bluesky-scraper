@@ -49,10 +49,10 @@ export default async function handler(req, res) {
   console.log({
     startDate,
     endDate,
-    gap: date.subtract(endDate, startDate).toDays(),
+    totalDayCount: date.subtract(endDate, startDate).toDays() + 1,
   });
   const filteredData = data.rows.filter(
-    (row) => date.subtract(endDate, new Date(row.PostDate)).toDays() < 8
+    (row) => date.subtract(new Date(row.PostDate), startDate).toDays() < 8
   );
   const dateSet = new Set(
     filteredData.map((row) => row.PostDate.split("T")[0])
