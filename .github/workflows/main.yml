@@ -1,0 +1,18 @@
+name: Scraper Cron Job
+on:
+  # Triggers the workflow after every 7 days
+  schedule:
+    - cron: '*/3 * * * *'
+
+jobs:
+  Send-Email:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      - run: npm ci
+      - run: node index.js
