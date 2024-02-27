@@ -1,6 +1,6 @@
 import login from "./utils/login.js";
 import { AsyncParser } from "@json2csv/node";
-// import fs from "fs/promises";
+import fs from "fs/promises";
 import date from "date-and-time";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
@@ -53,6 +53,7 @@ const apiRes = await fetch(
 );
 
 const data = await apiRes.json();
+await fs.writeFile(`full.json`, JSON.stringify(data));
 console.log({ allTimeTotal: data.rows.length });
 
 const startDate = date.addDays(new Date(new Date().toDateString()), -7);
@@ -65,7 +66,7 @@ console.log({
 });
 
 const filteredData = data.rows.filter(
-  (row) => date.subtract(endDate, new Date(row.PostDate)).toDays() < 6
+  (row) => true || date.subtract(endDate, new Date(row.PostDate)).toDays() < 6
 );
 const dateSet = new Set(filteredData.map((row) => row.PostDate.split("T")[0]));
 //filteredData.forEach((row) => consol.log(row.PostDate))
@@ -75,6 +76,7 @@ const finalJson = filteredData.map((row) => {
   const payDetails = {};
   payDetailsLines.map((line) => {
     const [key, value] = line.split(":");
+    console.log({key,value});
     if (key === "-Wkly Stipend")
       payDetails.wklyStipend = value.match(/\d+\.?\d*/g)[0];
     if (key === "-Gross Wkly Pay")
@@ -82,6 +84,7 @@ const finalJson = filteredData.map((row) => {
     if (key === "-FINDNETICS RECRUITMENT BONUS")
       payDetails.findneticsRecruitmentBonus = value.match(/\d+\.?\d*/g)[0];
   });
+  console.log(payDetails);
   return {
     scId: row.scId,
     scRegionID: row.scRegionID,
@@ -111,6 +114,9 @@ const finalJson = filteredData.map((row) => {
     Description: row.Description.split("</ul>")[0] + "</ul>",
     DescriptionPlainText: row.DescriptionPlainText,
     PayDetail: row.PayDetail,
+    wklyStipend: "",
+    grossWklyPay: "",
+    findneticsRecruitmentBonus: "",
     ...payDetails,
     ExpectedSalary: row.ExpectedSalary,
     SubmissionCount: row.SubmissionCount,
@@ -141,7 +147,7 @@ const asyncOpts = {};
 const parser = new AsyncParser(opts, asyncOpts, transformOpts);
 
 const csv = await parser.parse(finalJson).promise();
-// await fs.writeFile(`${yesterdayDate}.csv`, csv);
+ await fs.writeFile(`allv2.csv`, csv);
 
 // const transporter = nodemailer.createTransport({
 //   host: process.env["SMTP_HOST"],
