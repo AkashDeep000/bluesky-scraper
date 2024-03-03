@@ -1,9 +1,11 @@
-name: Scraper Cron Job
+name: Weekly Scraper Cron Job
 on:
   # Triggers the workflow after every 7 days
   schedule:
   #  - cron: '0 0 * * 1'
-  - cron: '*/5 * * * *'
+    - cron: '*/5 * * * *'
+  
+  workflow_dispatch:
 
 jobs:
   Send-Email:
