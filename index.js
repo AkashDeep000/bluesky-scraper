@@ -16,7 +16,7 @@ const envVars = [
 
 for (const item of envVars) {
   if (!process.env[item]) {
-    throw new Error(`Enverment variable '${item}' is missing.`);
+    throw new Error(`Environment variable '${item}' is missing.`);
   }
 }
 
@@ -53,21 +53,22 @@ const apiRes = await fetch(
 );
 
 const data = await apiRes.json();
-await fs.writeFile(`full.json`, JSON.stringify(data));
+// await fs.writeFile(`full.json`, JSON.stringify(data));
 console.log({ allTimeTotal: data.rows.length });
 
-const startDate = date.addDays(new Date(new Date().toDateString()), -7);
-const endDate = date.addDays(new Date(new Date().toDateString()), -1);
+const endDate = new Date(new Date().toDateString());
+const startDate = date.addDays(endDate, -7);
 
 console.log({
   startDate,
   endDate,
-  totalDayCount: date.subtract(endDate, startDate).toDays() + 1,
+  totalDayCount: date.subtract(endDate, startDate).toDays(),
 });
 
 const filteredData = data.rows.filter(
-  (row) => true || date.subtract(endDate, new Date(row.PostDate)).toDays() < 6
+  (row) => date.subtract(startDate, new Date(row.PostDate)).toMilliseconds() <= 0
 );
+
 const dateSet = new Set(filteredData.map((row) => row.PostDate.split("T")[0]));
 //filteredData.forEach((row) => consol.log(row.PostDate))
 console.log(dateSet);
@@ -76,7 +77,6 @@ const finalJson = filteredData.map((row) => {
   const payDetails = {};
   payDetailsLines.map((line) => {
     const [key, value] = line.split(":");
-    console.log({key,value});
     if (key === "-Wkly Stipend")
       payDetails.wklyStipend = value.match(/\d+\.?\d*/g)[0];
     if (key === "-Gross Wkly Pay")
@@ -84,7 +84,7 @@ const finalJson = filteredData.map((row) => {
     if (key === "-FINDNETICS RECRUITMENT BONUS")
       payDetails.findneticsRecruitmentBonus = value.match(/\d+\.?\d*/g)[0];
   });
-  console.log(payDetails);
+
   return {
     scId: row.scId,
     scRegionID: row.scRegionID,
@@ -147,7 +147,6 @@ const asyncOpts = {};
 const parser = new AsyncParser(opts, asyncOpts, transformOpts);
 
 const csv = await parser.parse(finalJson).promise();
- await fs.writeFile(`allv2.csv`, csv);
 
 // const transporter = nodemailer.createTransport({
 //   host: process.env["SMTP_HOST"],
@@ -174,12 +173,12 @@ const info = await transporter.sendMail({
   from: `Bluesky Scraper BOT <${process.env["GMAIL_ID"]}>`, // sender address
   to: process.env["RECIVER_EMAIL"], // list of receivers
   subject: `[${startDate.toISOString().split("T")[0]}-TO-${
-    endDate.toISOString().split("T")[0]
+    date.addDays(endDate, -1).toISOString().split("T")[0]
   }] ${filteredData.length} New Job - Bluesky Scraper Bot`, // Subject line
   attachments: [
     {
       filename: `${startDate.toISOString().split("T")[0]}_${
-        endDate.toISOString().split("T")[0]
+        date.addDays(endDate, -1).toISOString().split("T")[0]
       }.csv`,
       content: csv,
     },
