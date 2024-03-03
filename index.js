@@ -172,9 +172,9 @@ const transporter = nodemailer.createTransport({
 const info = await transporter.sendMail({
   from: `Bluesky Scraper BOT <${process.env["GMAIL_ID"]}>`, // sender address
   to: process.env["RECIVER_EMAIL"], // list of receivers
-  subject: process.env.GET_ALL ? "All" : `${startDate.toISOString().split("T")[0]}-TO-${
+  subject: (process.env.GET_ALL ? "All" : `[${startDate.toISOString().split("T")[0]}-TO-${
     date.addDays(endDate, -1).toISOString().split("T")[0]
-  }] ${filteredData.length}` + ` Job - Bluesky Scraper Bot`, // Subject line
+  }]`) + ` ${filteredData.length} Job - Bluesky Scraper Bot`, // Subject line
   attachments: [
     {
       filename: process.env.GET_ALL ? `All-${filteredData.length}.csv` : `${startDate.toISOString().split("T")[0]}_${
