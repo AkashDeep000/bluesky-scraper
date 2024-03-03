@@ -66,7 +66,7 @@ console.log({
 });
 
 const filteredData = data.rows.filter(
-  (row) => date.subtract(startDate, new Date(row.PostDate)).toMilliseconds() <= 0
+  (row) => process.env.GET_ALL ? true : date.subtract(startDate, new Date(row.PostDate)).toMilliseconds() <= 0
 );
 
 const dateSet = new Set(filteredData.map((row) => row.PostDate.split("T")[0]));
