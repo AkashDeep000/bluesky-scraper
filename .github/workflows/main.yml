@@ -3,7 +3,7 @@ on:
   # Triggers the workflow after every 7 days
   schedule:
   #  - cron: '0 0 * * 1'
-  - cron: '* * * * *'
+  - cron: '*/5 * * * *'
 
 jobs:
   Send-Email:
