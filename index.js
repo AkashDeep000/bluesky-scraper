@@ -32,8 +32,7 @@ const apiRes = await fetch(
       "access-control-allow-headers": "Origin, Content-Type, X-Auth-Token",
       "access-control-allow-methods": "GET, POST, PATCH, PUT, DELETE, OPTIONS",
       "access-control-allow-origin": "*",
-      authorization:
-        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjb21wYW55X2lkIjoiMzk0IiwiY2xpZW50X2lkIjoid2hpdGVnbG92ZSIsInRva2VuX2lkIjoiNjlDOUY0QUQyMkQ3NDU1Rjk4MjUzNkQ2MzkzOTlGQjIiLCJhcHBsaWNhdGlvbl9pZCI6IjEwNDgiLCJ1c2VybmFtZSI6IlJhbmR5aCIsImd1aWQiOiI3OUM0ODM5Qi1BMDA2LTRDMDEtOTNCOC03RTkzRkZDOERFQjUiLCJ1c2VyX2lkIjoiMzU1MzAiLCJ1c2VyX2dyb3VwX2lkIjoiMiIsInJlZ2lvbl9pZCI6IjYiLCJwb3J0YWxfaWQiOiI0IiwicG9ydGFsX2dyb3VwX2lkIjoiMyIsInNjX2lkIjoiNDM0IiwicGFyZW50X2lkIjoiMzA4MDUiLCJlbnRpdHlfaWQiOiI0MzQiLCJpc1N1cCI6IkZhbHNlIiwiaXNJbXAiOiJGYWxzZSIsImdlbmVyaWMiOiIwIiwiZW1haWwiOiJyaEBnLmNvbSIsIm1mYV90eXBlIjoiMCIsImlzcyI6IkJTUyIsImF1ZCI6IkJTU19BVURJRU5DRSIsImV4cCI6MTcwOTUyODA4OSwibmJmIjoxNzA5NDkyMDg5fQ.D4lsV7R9cFyPLyTvEy65W7Wc1OYHHfFLvgHtLtQd-DI",
+      authorization: "Bearer " + logedIn.access_token,
       "content-type": "application/json;charset=UTF-8",
       "sec-ch-ua":
         '"Not A(Brand";v="99", "Google Chrome";v="121", "Chromium";v="121"',
@@ -43,8 +42,7 @@ const apiRes = await fetch(
       "sec-fetch-mode": "cors",
       "sec-fetch-site": "same-origin",
     },
-    referrer:
-      "https://bssservice.blueskymss.com/mvc/Grid/?gridType=1&showSearch=&r=6&access_token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjb21wYW55X2lkIjoiMzk0IiwiY2xpZW50X2lkIjoid2hpdGVnbG92ZSIsInRva2VuX2lkIjoiNjlDOUY0QUQyMkQ3NDU1Rjk4MjUzNkQ2MzkzOTlGQjIiLCJhcHBsaWNhdGlvbl9pZCI6IjEwNDgiLCJ1c2VybmFtZSI6IlJhbmR5aCIsImd1aWQiOiI3OUM0ODM5Qi1BMDA2LTRDMDEtOTNCOC03RTkzRkZDOERFQjUiLCJ1c2VyX2lkIjoiMzU1MzAiLCJ1c2VyX2dyb3VwX2lkIjoiMiIsInJlZ2lvbl9pZCI6IjYiLCJwb3J0YWxfaWQiOiI0IiwicG9ydGFsX2dyb3VwX2lkIjoiMyIsInNjX2lkIjoiNDM0IiwicGFyZW50X2lkIjoiMzA4MDUiLCJlbnRpdHlfaWQiOiI0MzQiLCJpc1N1cCI6IkZhbHNlIiwiaXNJbXAiOiJGYWxzZSIsImdlbmVyaWMiOiIwIiwiZW1haWwiOiJyaEBnLmNvbSIsIm1mYV90eXBlIjoiMCIsImlzcyI6IkJTUyIsImF1ZCI6IkJTU19BVURJRU5DRSIsImV4cCI6MTcwOTUyODA4OSwibmJmIjoxNzA5NDkyMDg5fQ.D4lsV7R9cFyPLyTvEy65W7Wc1OYHHfFLvgHtLtQd-DI&refresh_token=-VbVHvXwR_EMzGmHUHIKhawo84BBoMj40quzAJ1yQIMtpx0PpoIZTGGWZLN-pVARsoN1nCsCPSSCHcMU7-mmcxhPKmLEdk7DDd2scpMkyfDayC3jHjK1iXjvXwFAE40Qj8AzbG9I-9LZs_LmRMUDYMeiaDKtca7oN_U9kBRONc3bDzsjlh-BsaupGby7iYaagCUHhhKykE826t_ZQTSXwq8cxIlMrLTHGWuqsuCEXRQtH_Y75R-_8Qa6byvklgDFP79WUG-bWbM0h6RUc-xkgAM1t56fq5AJH5OWY9A1jsbBfU50TmAQaUCN7P-1Ciw_pFSl4ZHGJ6jgFUzFspy4h6HCt5UWiykbjD5LqQvaZhU2kvB_bBpGh23zEhrM6fcAzG6wqxj-qiprB5tTyuXMocNlye_gm4QKNVhgt4980eZx2HtYGlnu_M8IsQKG_m6gQY3mpehehnyocO8ZLZvpWp0dOyAc2Z1qq2aVlOyHadFuy4uRVuNKHAst7CBfiyxF83NYyocl35O1CfwzSTRi4aWhr32joy701fD7RZ0bWv7B0jO9kL7UVxrb8DTMu9hd4sH8YonSlaZsVyOC6sgf6hVssA6xqoUICVZMJjS8qnw&_tcp=whiteglove&o=434",
+    referrer: "https://whiteglove.blueskymss.com/",
     referrerPolicy: "strict-origin-when-cross-origin",
     body: '[{"key":"value","value":"160281"},{"key":"filterId","value":"73179b44-6cc5-4fd2-8695-75c4029530a5"},{"key":"_tcp","value":"whiteglove"},{"key":"gridType","value":1},{"key":"filter","value":"true"},{"key":"f0","value":"DateTimeType = 1"},{"key":"f1","value":"DateTimeTypeText = \'Future And Last Week\'"},{"key":"f2","value":"RegionId = -1"},{"key":"f3","value":"RegionIdText = \'All\'"},{"key":"f4","value":"FacilityTypeID = 0"},{"key":"f5","value":"FacilityTypeIDText = \'All\'"},{"key":"f6","value":"NeedStatus = 1,2,5,6"},{"key":"f7","value":"NeedStatusText = \'Non Assigned; Applied; Partial Assigned; Reopened/Cancelled By Caregiver\'"},{"key":"columns","value":"StartDate,EndDate,FacilityName,UnitName,Duration,NumOfNeeds,NumOfAssigned,DesiredShift,DegreeName,TypeName,RegionName,City,StateIDName,PlPayRate,Description,PostDate,Candidates,Id"},{"key":"orderBy","value":"Id"},{"key":"pageCount","value":"true"},{"key":"pageNumber","value":1},{"key":"pageSize","value":999999},{"key":"reqInd","value":2}]',
     method: "POST",
