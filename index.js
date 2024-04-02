@@ -4,6 +4,7 @@ import fs from "fs/promises";
 import date from "date-and-time";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import cheerio from "cheerio"
 dotenv.config();
 
 const envVars = [
@@ -74,9 +75,9 @@ const dateSet = new Set(filteredData.map((row) => row.PostDate.split("T")[0]));
 //filteredData.forEach((row) => consol.log(row.PostDate))
 console.log(dateSet);
 const finalJson = filteredData.map((row) => {
-  const payDetailsLines = row.PayDetail.split("\n");
+  const payDetailsLines = row.PayDetail?.split("\n");
   const payDetails = {};
-  payDetailsLines.map((line) => {
+  payDetailsLines?.map((line) => {
     const [key, value] = line.split(":");
     if (key === "-Wkly Stipend")
       payDetails.wklyStipend = value.match(/\d+\.?\d*/g)[0];
@@ -85,6 +86,16 @@ const finalJson = filteredData.map((row) => {
     if (key === "-FINDNETICS RECRUITMENT BONUS")
       payDetails.findneticsRecruitmentBonus = value.match(/\d+\.?\d*/g)[0];
   });
+
+  const $ = cheerio.load(row.Description.split("</ul>")[0] + "</ul>")
+
+  let title = ""
+
+  $("li").each((i, el) => {
+    if (/title/i.test($(el).text())){
+      title = $(el).text().split(':')[1].trim()
+    }
+  })
 
   return {
     scId: row.scId,
@@ -112,6 +123,7 @@ const finalJson = filteredData.map((row) => {
     City: row.City,
     StateID: row.StateID,
     StateIDName: row.StateIDName,
+    Title: title,
     Description: row.Description.split("</ul>")[0] + "</ul>",
     DescriptionPlainText: row.DescriptionPlainText,
     PayDetail: row.PayDetail,
